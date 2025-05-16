@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd">
+	<flow name="post:\cases:application\json:uhub-sapi-config">
+        <set-variable value="#[attributes.headers.'x-correlation-id' default &quot;&quot;]" doc:name="set correlationID" doc:id="1270011b-8843-40d0-896e-553960975849" variableName="correlationID"/>
+		<logger level="INFO" doc:name="start register covid cases process" doc:id="cd060cec-627e-4c69-9300-8286c1fe0d0d" message='"transactionID:" #[vars.transactionID],  "correlationID:" #[vars.correlationID], message: "Started register covid case process" with "payload:" #[payload]'/>
+		<ee:transform doc:name="prepare request payload for database" doc:id="6e314103-4192-4389-9673-2672f9c9ae2a" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+{
+	zip: payload.address.postal,
+	fname: payload.firstName,
+	country: payload.address.country,
+	city: payload.address.city,
+	source: payload.source,
+	"type": payload.caseType,
+	nationalIDType: payload.nationalIDType,
+	lname: payload.lastName,
+	createBy: "UHIS",
+	nationalID: payload.nationalID,
+	phone: payload.phone,
+	updateBy: "UHIS",
+	dob: payload.dateOfBirth,
+	street: payload.address.streetAddress,
+	state: payload.address.state,
+	email: payload.email
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<db:insert doc:name="insert into db" doc:id="b2221bd1-43de-48a5-8800-01bd1fe23499" config-ref="Database_Config" autoGenerateKeys="true">
+			<db:sql ><![CDATA[INSERT INTO UHUB.CVD_CASE_MASTER 
+(SOURCE, CASE_TYPE, FIRST_NAME, LAST_NAME, PHONE, EMAIL, DATE_OF_BIRTH, NATIONAL_ID, NATIONAL_ID_TYPE, STREET_ADDRESS, CITY, STATE, POSTAL, COUNTRY, CREATE_BY, UPDATE_BY) 
+VALUES 
+(:source, :type, :fname, :lname, :phone, :email, :dob, :nationalID, :nationalIDType, :street, :city, :state, :zip, :country, :createBy, :updateBy);
+]]></db:sql>
+			<db:input-parameters ><![CDATA[#[payload]]]></db:input-parameters>
+			<db:auto-generated-keys-column-names >
+				<db:auto-generated-keys-column-name value="CASE_ID" />
+			</db:auto-generated-keys-column-names>
+		</db:insert>
+		<ee:transform doc:name="prepare response" doc:id="a4612c8c-a994-40b9-b502-c9bf98904bc9">
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+	caseID: payload.generatedKeys.GENERATED_KEY as String default ""
+}]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
+		<logger level="INFO" doc:name="End of the covid case registration process" doc:id="006357eb-89a0-4796-9a83-a9c1275206b4" message="TransactionID: #[vars.transactionID], correlationID: #[vars.correlationID], message: record inserted successfully, payload: #[payload]"/>
+    
+</flow></mule>

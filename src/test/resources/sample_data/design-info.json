@@ -1,0 +1,13 @@
+{
+  "sampleData": {
+    "d3282ece-68b4-42a8-b237-1d3fc9c02e18": {
+      "payload": "sample_data/json.json"
+    },
+    "a4612c8c-a994-40b9-b502-c9bf98904bc9": {
+      "vars-CASE_ID": "sample_data/statementresult.dwl"
+    },
+    "da4f9e39-d216-4ae5-8352-3d45f0f567cd": {
+      "payload": "sample_data/list_java.dwl"
+    }
+  }
+}

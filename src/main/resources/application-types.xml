@@ -1,0 +1,90 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<types:mule xmlns:types="http://www.mulesoft.org/schema/mule/types">
+  <types:catalog>
+    <types:type name="insert-db-example" format="json">
+      <types:shape format="weave" example="examples/input-register-case.json"><![CDATA[%dw 2.0
+
+type insert_db_example = {|
+  source: String, 
+  caseType: String, 
+  firstName: String, 
+  lastName: String, 
+  phone: String, 
+  email: String, 
+  dateOfBirth: String, 
+  nationalID: String, 
+  nationalIDType: String, 
+  address: {|
+    streetAddress: String, 
+    city: String, 
+    state: String, 
+    postal: String, 
+    country: String
+  |}
+|} {"example": "{\\\"source\\\":\\\"Hospital1\\\",\\\"caseType\\\":\\\"positive\\\",\\\"firstName\\\":\\\"John\\\",\\\"lastName\\\":\\\"Nixon\\\",\\\"phone\\\":\\\"541-754-3010\\\",\\\"email\\\":\\\"john@gmail.com\\\",\\\"dateOfBirth\\\":\\\"1989-04-26\\\",\\\"nationalID\\\":\\\"209-49-6193\\\",\\\"nationalIDType\\\":\\\"SSN\\\",\\\"address\\\":{\\\"streetAddress\\\":\\\"1600 Pennsylvania Avenue NW\\\",\\\"city\\\":\\\"Washington\\\",\\\"state\\\":\\\"DC\\\",\\\"postal\\\":\\\"20500\\\",\\\"country\\\":\\\"USA\\\"}}"}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="update-db-example" format="json">
+      <types:shape format="weave" example="examples/update-db-example-uhub-sapi.json"><![CDATA[%dw 2.0
+
+type update_db_example = {|
+  source: String, 
+  caseID: String, 
+  caseType: String, 
+  firstName: String, 
+  lastName: String, 
+  phone: String, 
+  email: String, 
+  dateOfBirth: String, 
+  nationalID: String, 
+  nationalIDType: String, 
+  address: {|
+    streetAddress: String, 
+    city: String, 
+    state: String, 
+    postal: String, 
+    country: String
+  |}, 
+  createDate: String, 
+  updateDate: String
+|} {"example": "{\\\"source\\\":\\\"Hospital1\\\",\\\"caseID\\\":\\\"3\\\",\\\"caseType\\\":\\\"positive\\\",\\\"firstName\\\":\\\"John\\\",\\\"lastName\\\":\\\"Nixon\\\",\\\"phone\\\":\\\"541-754-3010\\\",\\\"email\\\":\\\"john@gmail.com\\\",\\\"dateOfBirth\\\":\\\"1989-04-26\\\",\\\"nationalID\\\":\\\"209-49-6193\\\",\\\"nationalIDType\\\":\\\"SSN\\\",\\\"address\\\":{\\\"streetAddress\\\":\\\"1600 Pennsylvania Avenue NW\\\",\\\"city\\\":\\\"Washington\\\",\\\"state\\\":\\\"DC\\\",\\\"postal\\\":\\\"20500\\\",\\\"country\\\":\\\"USA\\\"},\\\"createDate\\\":\\\"2021-05-03\\\",\\\"updateDate\\\":\\\"2021-05-03\\\"}"}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="output-get-case-by-nationalID" format="json">
+      <types:shape format="weave" example="examples/output-db-get-casesby-nationalid.txt"><![CDATA[%dw 2.0
+
+type output_get_case_by_nationalID = Array<{|  source: String,   caseID: String,   caseType: String,   firstName: String,   lastName: String,   phone: String,   email: String,   dateOfBirth: String,   nationalID: String,   nationalIDType: String,   address: {|    streetAddress: String,     city: String,     state: String,     postal: String,     country: String  |},   createDate: String,   updateDate: String|}> {"example": "[{\\\"source\\\":\\\"Hospital1\\\",\\\"caseID\\\":\\\"456464\\\",\\\"caseType\\\":\\\"positive\\\",\\\"firstName\\\":\\\"John\\\",\\\"lastName\\\":\\\"Nixon\\\",\\\"phone\\\":\\\"541-754-3010\\\",\\\"email\\\":\\\"john@gmail.com\\\",\\\"dateOfBirth\\\":\\\"1989-04-26\\\",\\\"nationalID\\\":\\\"209-49-6193\\\",\\\"nationalIDType\\\":\\\"SSN\\\",\\\"address\\\":{\\\"streetAddress\\\":\\\"1600 Pennsylvania Avenue NW\\\",\\\"city\\\":\\\"Washington\\\",\\\"state\\\":\\\"DC\\\",\\\"postal\\\":\\\"20500\\\",\\\"country\\\":\\\"USA\\\"},\\\"createDate\\\":\\\"2021-05-03\\\",\\\"updateDate\\\":\\\"2021-05-03\\\"},{\\\"source\\\":\\\"Hospital1\\\",\\\"caseID\\\":\\\"528293\\\",\\\"caseType\\\":\\\"negative\\\",\\\"firstName\\\":\\\"John\\\",\\\"lastName\\\":\\\"Nixon\\\",\\\"phone\\\":\\\"541-754-3010\\\",\\\"email\\\":\\\"john@gmail.com\\\",\\\"dateOfBirth\\\":\\\"1989-04-26\\\",\\\"nationalID\\\":\\\"209-49-6193\\\",\\\"nationalIDType\\\":\\\"SSN\\\",\\\"address\\\":{\\\"streetAddress\\\":\\\"1600 Pennsylvania Avenue NW\\\",\\\"city\\\":\\\"Washington\\\",\\\"state\\\":\\\"DC\\\",\\\"postal\\\":\\\"20500\\\",\\\"country\\\":\\\"USA\\\"},\\\"createDate\\\":\\\"2020-12-14\\\",\\\"updateDate\\\":\\\"2020-12-14\\\"}]"}
+
+]]></types:shape>
+    </types:type>
+  </types:catalog>
+  <types:enrichment select="#6e314103-4192-4389-9673-2672f9c9ae2a">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="insert-db-example"/>
+        </types:message>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#d3282ece-68b4-42a8-b237-1d3fc9c02e18">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="update-db-example"/>
+        </types:message>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#625c8364-fe0b-4e51-bc60-cd428e78af7d">
+    <types:processor-declaration>
+      <types:output-event>
+        <types:message>
+          <types:payload type="output-get-case-by-nationalID"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+</types:mule>

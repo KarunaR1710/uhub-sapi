@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd">
+	<flow name="get:\cases\(nationalID):uhub-sapi-config">
+        <set-variable value='#[attributes.headers."x-correlation-id" default ""]' doc:name="Set correlation ID" doc:id="beed506c-d5eb-4129-a92e-e1ae9e610ba4" variableName="correlationID"/>
+		<logger level="INFO" doc:name="start log" doc:id="692d60d3-494c-4f3a-863a-356069bd7860" message='transaction_ID: #[vars.transactionID], correlation_ID: #[vars.correlationID] , message: "get covid cases by nationalID flow started"'/>
+		<set-variable value="#[attributes.uriParams.nationalID]" doc:name="Set nationalID" doc:id="9d387af8-9cb8-4626-92f1-f43e1d56383a" variableName="nationalID"/>
+		<db:select doc:name="Select covid cases which matces national ID" doc:id="1ab03fe2-fc2c-4307-b58e-df48ad3d22f7" config-ref="Database_Config">
+			<db:sql ><![CDATA[select * from UHUB.`CVD_CASE_MASTER` where NATIONAL_ID = :nationalID;]]></db:sql>
+			<db:input-parameters ><![CDATA[#[{
+	nationalID: vars.nationalID
+}]]]></db:input-parameters>
+		</db:select>
+		<choice doc:name="Choice" doc:id="d9c80ef7-4e5b-458f-bd1c-40568d90607e" >
+			<when expression="#[sizeOf(payload)&gt;0]">
+				<ee:transform doc:name="prepare success response" doc:id="625c8364-fe0b-4e51-bc60-cd428e78af7d">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+payload map ( payload01 , indexOfPayload01 ) -> {
+	source: payload01.SOURCE,
+	caseID: payload01.CASE_ID as String,
+	caseType: payload01.CASE_TYPE,
+	firstName: payload01.FIRST_NAME,
+	lastName: payload01.LAST_NAME,
+	phone: payload01.PHONE,
+	email: payload01.EMAIL default "",
+	dateOfBirth: payload01.DATE_OF_BIRTH as String,
+	nationalID: payload01.NATIONAL_ID,
+	nationalIDType: payload01.NATIONAL_ID_TYPE,
+	address: {
+		streetAddress: payload01.STREET_ADDRESS,
+		city: payload01.CITY,
+		state: payload01.STATE,
+		postal: payload01.POSTAL,
+		country: payload01.COUNTRY
+	},
+	createDate: payload01.CREATE_DATE as String default "",
+	updateDate: payload01.UPDATE_DATE as String default ""
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+			</when>
+			<otherwise >
+				<ee:transform doc:name="prepare records not found response" doc:id="d3c24354-7f89-46ba-8ca5-dc26a7cf1a32" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+message: "No Records found with the provided nationalID: " ++ vars.nationalID
+}]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+			</otherwise>
+		</choice>
+		<logger level="INFO" doc:name="End Log" doc:id="fff3ceed-242e-4223-bf78-733b0a4964e8" message="TransactionID: #[vars.transactionID], correlationID: #[vars.correlationID], message: completed the  flow , payload: #[payload]"/>
+    
+</flow>
+	</mule>
