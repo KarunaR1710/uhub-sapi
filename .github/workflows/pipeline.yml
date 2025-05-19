@@ -35,7 +35,7 @@ jobs:
       run: mvn help:effective-settings
     
     - name: Build with Maven
-      run: mvn -B package -s .maven/settings.xml
+      run: mvn -B package -s .maven/settings.xml -e -X
     
     - name: Stamp artifact file name with commit hash
       run: |
@@ -79,7 +79,7 @@ jobs:
         artifactName=$(ls *.jar | head -1)
         mvn deploy \
          -s .maven/settings.xml \
-         -Dmule.artifact=$artifactName \
+         -Dmule.artifact=$artifactName -e -X \
        
     
  
@@ -113,4 +113,4 @@ jobs:
          -Dmule.artifact=$artifactName \
          -s .maven/settings.xml \
          -DskipTests \
-         -DskipDeploymentVerification="true"
+         -DskipDeploymentVerification="true" -e -X
