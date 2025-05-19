@@ -2,9 +2,15 @@
 <settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
           xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
+<<<<<<< HEAD
   <pluginGroups>
     <pluginGroup>org.mule.tools</pluginGroup>
   </pluginGroups>	  
+=======
+    <pluginGroups>
+       <pluginGroup>org.mule.tools</pluginGroup>
+    </pluginGroups>      
+>>>>>>> 1c04c25a3722453298f02a2a9f6288799eab7d52
     <servers>
         <server>
             <id>ca.anypoint.credentials</id>

@@ -33,4 +33,8 @@ jobs:
         run: |
           mvn deploy --settings .maven/settings.xml -DskipMunitTests -DmuleDeploy \
           -Dclient.id="${{ secrets.CA_CLIENT_ID }}" \
+<<<<<<< HEAD
           -Dclient.secret="${{ secrets.CA_CLIENT_SECRET }}" -e -X
+=======
+          -Dclient.secret="${{ secrets.CA_CLIENT_SECRET }}" -e -X
+>>>>>>> 1c04c25a3722453298f02a2a9f6288799eab7d52
