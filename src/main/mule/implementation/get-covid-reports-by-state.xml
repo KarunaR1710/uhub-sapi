@@ -10,21 +10,21 @@ http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/cu
         <set-variable value='#[attributes.headers."x-correlation-id" default ""]' doc:name="Set correlation ID" doc:id="3d31a527-1a1d-4471-b546-fd7f4f68fbbd" variableName="correlationID"/>
 		<logger level="INFO" doc:name="start log" doc:id="07436005-84a1-400f-b35d-1ae6b57818e8" message='transaction_ID: #[vars.transactionID], correlation_ID: #[vars.correlationID] , message: "get covid cases report by state flow started"'/>
 		<set-variable value="#[upper(attributes.queryParams.state)]" doc:name="Set Variable state" doc:id="af6855ea-2d67-45ae-bf73-0b0a7e7e7ac3" variableName="state"/>
-		<choice doc:name="Choice" doc:id="c30ef35e-5844-44e4-a049-0ce123bfdb56" >
-			<when expression="#[vars.state != null]">
+		<!-- [STUDIO:"Choice"]<choice doc:name="Choice" doc:id="c30ef35e-5844-44e4-a049-0ce123bfdb56" >
+			<when expression="#[vars.state != null&#93;">
 				<db:select doc:name="Select" doc:id="d85cdf3c-3071-4f2e-8d86-c4f033a750ba" config-ref="Database_Config">
-					<db:sql ><![CDATA[select count(*) as count, case_type, state from UHUB.`CVD_CASE_MASTER` where state = :state group by case_type, state;]]></db:sql>
+					<db:sql ><![CDATA[select count(*) as count, case_type, state from UHUB.`CVD_CASE_MASTER` where state = :state group by case_type, state;&#93;&#93;></db:sql>
 					<db:input-parameters ><![CDATA[#[{
 	state: vars.state
-}]]]></db:input-parameters>
+}&#93;&#93;&#93;></db:input-parameters>
 				</db:select>
 			</when>
 			<otherwise >
 				<db:select doc:name="Select" doc:id="84fd907a-d0b9-4180-939e-842e95240cc5" config-ref="Database_Config">
-					<db:sql ><![CDATA[select count(*) as count, case_type, state from UHUB.`CVD_CASE_MASTER` group by case_type, state order by state;]]></db:sql>
+					<db:sql ><![CDATA[select count(*) as count, case_type, state from UHUB.`CVD_CASE_MASTER` group by case_type, state order by state;&#93;&#93;></db:sql>
 				</db:select>
 			</otherwise>
-		</choice>
+		</choice> [STUDIO] -->
 		<ee:transform doc:name="prepare response payload" doc:id="da4f9e39-d216-4ae5-8352-3d45f0f567cd" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0

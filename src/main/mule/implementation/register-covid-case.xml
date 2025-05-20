@@ -34,17 +34,17 @@ output application/java
 }]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
-		<db:insert doc:name="insert into db" doc:id="b2221bd1-43de-48a5-8800-01bd1fe23499" config-ref="Database_Config" autoGenerateKeys="true">
+		<!-- [STUDIO:"insert into db"]<db:insert doc:name="insert into db" doc:id="b2221bd1-43de-48a5-8800-01bd1fe23499" config-ref="Database_Config" autoGenerateKeys="true">
 			<db:sql ><![CDATA[INSERT INTO UHUB.CVD_CASE_MASTER 
 (SOURCE, CASE_TYPE, FIRST_NAME, LAST_NAME, PHONE, EMAIL, DATE_OF_BIRTH, NATIONAL_ID, NATIONAL_ID_TYPE, STREET_ADDRESS, CITY, STATE, POSTAL, COUNTRY, CREATE_BY, UPDATE_BY) 
 VALUES 
 (:source, :type, :fname, :lname, :phone, :email, :dob, :nationalID, :nationalIDType, :street, :city, :state, :zip, :country, :createBy, :updateBy);
-]]></db:sql>
-			<db:input-parameters ><![CDATA[#[payload]]]></db:input-parameters>
+&#93;&#93;></db:sql>
+			<db:input-parameters ><![CDATA[#[payload&#93;&#93;&#93;></db:input-parameters>
 			<db:auto-generated-keys-column-names >
 				<db:auto-generated-keys-column-name value="CASE_ID" />
 			</db:auto-generated-keys-column-names>
-		</db:insert>
+		</db:insert> [STUDIO] -->
 		<ee:transform doc:name="prepare response" doc:id="a4612c8c-a994-40b9-b502-c9bf98904bc9">
             <ee:message>
                 <ee:set-payload><![CDATA[%dw 2.0

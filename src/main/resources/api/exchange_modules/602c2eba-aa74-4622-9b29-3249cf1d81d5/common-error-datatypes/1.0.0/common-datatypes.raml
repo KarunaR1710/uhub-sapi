@@ -1,0 +1,51 @@
+#%RAML 1.0 Library
+usage: defines all common data types across apis
+types:
+ fieldValidationType:
+  type: object
+  properties:
+   field:
+    type: string
+    description: input field that is missing or not compliant to the specification
+    required: true
+   description:
+    type: string
+    description: provides the details of the validation error 
+    required: true       
+ error-datatypes:
+  type: object
+  properties:
+   code:
+    description: "error code, can be internal code specific to the working of the API that can be referenced by the 'additionalDocumentation' field"
+    type: number
+    required: true
+    example: 400
+   message:   
+    description: "A human readable brief context of the error occurred"
+    type: string
+    required: false
+    example: "Internal Server Error"
+   description: 
+    description: "Error message that describes the error occured comprehensively" 
+    type: string
+    required: false
+    example: "The server encountered an unexpected condition which prevented it from fulfilling the request"
+   validationErrors:
+    description: In case of bad request errors, this object is populated with the fields and errors 
+    type: fieldValidationType[] 
+    required: false  
+   dateTime:
+    type: datetime
+    required: false
+    example: "2021-05-31T06:18:02Z"
+   transactionId:
+     type: string
+     required: false
+     example: "48n32920-69ne-47b4-907d-fa15869f3c4d"
+   additionalDocumentationURL:
+     description: URL to exchange where additional information about the error can be found, specially incase of non standard exceptions
+     type: string
+     required: false
+          
+      
+      

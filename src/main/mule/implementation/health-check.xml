@@ -12,7 +12,7 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 output application/json
 ---
 {
-	message: "UHUB SAPI api is alive and kicking"
+	message: "Confirmed that UHUB SAPI api is alive and kicking"
 }]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>

@@ -10,11 +10,8 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 http://www.mulesoft.org/schema/mule/secure-properties http://www.mulesoft.org/schema/mule/secure-properties/current/mule-secure-properties.xsd
 http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd">
 	<http:listener-config name="uhub-sapi-httpListenerConfig" basePath="covid">
-        <http:listener-connection host="0.0.0.0" port="8091" />
-    </http:listener-config><apikit:config name="uhub-sapi-config" api="resource::31c7ef82-aff7-4a6d-b6ee-6f9fed6dca1f:uhub-sapi:1.0.0:raml:zip:uhub-sapi.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
-	<db:config name="Database_Config" doc:name="Database Config" doc:id="6e1fdd8d-8b81-4efd-bd73-7029fb7870c7" >
-		<db:my-sql-connection host="${secure::db.host}" port="${secure::db.port}" user="${secure::db.user}" password="${secure::db.password}" />
-	</db:config>
+        <http:listener-connection host="0.0.0.0" port="8081" />
+    </http:listener-config><apikit:config name="uhub-sapi-config" api="uhub-sapi.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
 	<secure-properties:config name="Secure_Properties_Config" doc:name="Secure Properties Config" doc:id="df69b516-7e9c-4354-93cb-42326d21f7c5" file="dev.yaml" key="abcdefgh12345678" />
 	
 </mule>

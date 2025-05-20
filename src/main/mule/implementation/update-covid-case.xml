@@ -43,7 +43,7 @@ output application/java
 }]]></ee:set-variable>
 			</ee:variables>
 		</ee:transform>
-		<db:update doc:name="Update database" doc:id="5ea58fe1-07b8-4a11-9f9a-a0c533b5756e" config-ref="Database_Config">
+		<!-- [STUDIO:"Update database"]<db:update doc:name="Update database" doc:id="5ea58fe1-07b8-4a11-9f9a-a0c533b5756e" config-ref="Database_Config">
 			<db:sql ><![CDATA[update UHUB.CVD_CASE_MASTER set SOURCE = :source, 
   CASE_ID = :caseID,
   CASE_TYPE = :caseType, 
@@ -60,9 +60,9 @@ output application/java
   POSTAL = :postal, 
   COUNTRY = :country, 
   CREATE_DATE = :createDate, 
-  UPDATE_DATE = :updateDate where CASE_ID = :caseID;]]></db:sql>
-			<db:input-parameters ><![CDATA[#[vars.covidPayload]]]></db:input-parameters>
-		</db:update>
+  UPDATE_DATE = :updateDate where CASE_ID = :caseID;&#93;&#93;></db:sql>
+			<db:input-parameters ><![CDATA[#[vars.covidPayload&#93;&#93;&#93;></db:input-parameters>
+		</db:update> [STUDIO] -->
 		<ee:transform doc:name="prepare response">
             <ee:message>
                 <ee:set-payload><![CDATA[%dw 2.0

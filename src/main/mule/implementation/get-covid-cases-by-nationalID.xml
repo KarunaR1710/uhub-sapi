@@ -10,12 +10,12 @@ http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/cu
         <set-variable value='#[attributes.headers."x-correlation-id" default ""]' doc:name="Set correlation ID" doc:id="beed506c-d5eb-4129-a92e-e1ae9e610ba4" variableName="correlationID"/>
 		<logger level="INFO" doc:name="start log" doc:id="692d60d3-494c-4f3a-863a-356069bd7860" message='transaction_ID: #[vars.transactionID], correlation_ID: #[vars.correlationID] , message: "get covid cases by nationalID flow started"'/>
 		<set-variable value="#[attributes.uriParams.nationalID]" doc:name="Set nationalID" doc:id="9d387af8-9cb8-4626-92f1-f43e1d56383a" variableName="nationalID"/>
-		<db:select doc:name="Select covid cases which matces national ID" doc:id="1ab03fe2-fc2c-4307-b58e-df48ad3d22f7" config-ref="Database_Config">
-			<db:sql ><![CDATA[select * from UHUB.`CVD_CASE_MASTER` where NATIONAL_ID = :nationalID;]]></db:sql>
+		<!-- [STUDIO:"Select covid cases which matces national ID"]<db:select doc:name="Select covid cases which matces national ID" doc:id="1ab03fe2-fc2c-4307-b58e-df48ad3d22f7" config-ref="Database_Config">
+			<db:sql ><![CDATA[select * from UHUB.`CVD_CASE_MASTER` where NATIONAL_ID = :nationalID;&#93;&#93;></db:sql>
 			<db:input-parameters ><![CDATA[#[{
 	nationalID: vars.nationalID
-}]]]></db:input-parameters>
-		</db:select>
+}&#93;&#93;&#93;></db:input-parameters>
+		</db:select> [STUDIO] -->
 		<choice doc:name="Choice" doc:id="d9c80ef7-4e5b-458f-bd1c-40568d90607e" >
 			<when expression="#[sizeOf(payload)&gt;0]">
 				<ee:transform doc:name="prepare success response" doc:id="625c8364-fe0b-4e51-bc60-cd428e78af7d">
