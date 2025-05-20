@@ -4,7 +4,7 @@
 
 	<groupId>602c2eba-aa74-4622-9b29-3249cf1d81d5</groupId>
 	<artifactId>uhub-sapi-uho-test</artifactId>
-	<version>1.0.0</version>
+	<version>1.0.1</version>
 	<packaging>mule-application</packaging>
 
 	<name>uhub-sapi-uho-test</name>
