@@ -3,11 +3,11 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>602c2eba-aa74-4622-9b29-3249cf1d81d5</groupId>
-	<artifactId>uhub-sapi-uho</artifactId>
-	<version>1.0.2</version>
+	<artifactId>uhub-sapi-uho-test</artifactId>
+	<version>1.0.0</version>
 	<packaging>mule-application</packaging>
 
-	<name>uhub-sapi-uho</name>
+	<name>uhub-sapi-uho-test</name>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
